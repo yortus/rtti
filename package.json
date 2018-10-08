@@ -1,0 +1,25 @@
+{
+    "name": "rtti",
+    "version": "0.0.1",
+    "description": "",
+    "main": "dist/commonjs/index.js",
+    "typings": "dist/commonjs/index.d.ts",
+    "scripts": {
+        "clean": "rimraf dist/",
+        "build": "tsc -p src && tsc -p test",
+        "test": "node ./scripts/run-unit-tests",
+        "prepare": "npm run self-ref && npm run build",
+        "self-ref": "node ./scripts/enable-self-reference"
+    },
+    "license": "Proprietary",
+    "dependencies": {},
+    "devDependencies": {
+        "@types/chai": "^4.1.4",
+        "@types/mocha": "^5.2.2",
+        "@types/node": "^8.10.20",
+        "chai": "^4.1.2",
+        "mocha": "^5.2.0",
+        "rimraf": "^2.6.2",
+        "typescript": "next"
+    }
+}
