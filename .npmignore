@@ -5,6 +5,7 @@ scripts/
 src/
 test/
 extras/
+.cache/
 *.ts
 !*.d.ts
 *.js.map
