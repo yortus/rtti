@@ -1,0 +1,14 @@
+.vscode/
+dist/test/
+dist/extras/
+scripts/
+src/
+test/
+extras/
+*.ts
+!*.d.ts
+*.js.map
+*.log
+tsconfig.json
+README.md
+TODO.md
