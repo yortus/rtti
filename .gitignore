@@ -65,3 +65,6 @@ typings/
 
 # dist directories
 dist/
+
+# Other
+.cache/

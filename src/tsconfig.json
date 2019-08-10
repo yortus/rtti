@@ -3,19 +3,19 @@
         "target": "es2017",
         "module": "commonjs",
         "lib": ["es2017"],
-        "types": ["node"],
+        "types": [],
         "outDir": "../dist/commonjs",
         "sourceMap": true,
         "declaration": true,
 
         // Static checks
+        "strict": true,
         "allowUnreachableCode": false,
         "allowUnusedLabels": false,
         "noFallthroughCasesInSwitch": true,
         "noImplicitAny": true,
         "noImplicitReturns": true,
         "noImplicitThis": true,
-        "noImplicitUseStrict": true,
         "noUnusedLocals": true,
         "noUnusedParameters": true,
         "strictNullChecks": true

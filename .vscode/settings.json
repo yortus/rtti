@@ -3,5 +3,5 @@
 	"editor.rulers": [120],
 
     // Specifies the folder path containing the tsserver and lib*.d.ts files to use.
-	"typescript.tsdk": "node_modules/typescript/lib"
+	"typescript.tsdk": "node_modules/typescript/lib",
 }

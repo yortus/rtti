@@ -3,10 +3,10 @@
         "target": "es2017",
         "module": "commonjs",
         "lib": ["es2017"],
-        "types": ["node", "mocha"],
+        "types": ["mocha"],
         "outDir": "../dist/test",
         "sourceMap": true,
-        "declaration": true,
+        "declaration": false,
 
         // Static checks
         "allowUnreachableCode": false,

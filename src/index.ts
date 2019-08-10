@@ -1,8 +1,2 @@
-import * as ts from './type-system';
-
-
-
-
-
-export default ts;
-export * from './type-system';
+import * as rtti from './rtti';
+export default rtti;
