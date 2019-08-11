@@ -1,0 +1,7 @@
+TODO:
+  [x] fix: TypeOf<Object> for optional props
+  [x] fix: t.optional is *not* a Type, it is only valid inside objects and tuples
+  [ ] fix: support t.optional in tuples
+  [ ] is()
+  [ ] Other builtins: RegExp, Symbol, Promise, Function, BigInt
+  [ ] Other type operators: keyof, index access, mapped, conditional, spread, rest

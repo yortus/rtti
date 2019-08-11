@@ -1,5 +1,4 @@
-import t from 'rtti';
-import { is } from '../dist/commonjs/rtti';
+import {is, t,} from 'rtti';
 
 
 
@@ -24,15 +23,15 @@ const x9 = t.tuple(t.string, t.string, t.number);
 
 
 const results = [
-    t.is(42, t.number),
-    t.is({foo: 'bar'}, x1),
-    t.is([new Date(), null, null], x2),
-    t.is({foo: 42, bar: true, quux: new Date()}, x1),
-    t.is([42, 42, 42], x9),
-    t.is(['42', undefined, 42], x9),
-    t.is(['42', '42', 42], x9),
-    t.is({foo: 42, bar: true, quux: new Date(), baz: 42}, x1),
-    t.is({foo: 42, bar: true, quux: new Date(), baz: '42'}, x1),
+    is(42, t.number),
+    is({foo: 'bar'}, x1),
+    is([new Date(), null, null], x2),
+    is({foo: 42, bar: true, quux: new Date()}, x1),
+    is([42, 42, 42], x9),
+    is(['42', undefined, 42], x9),
+    is(['42', '42', 42], x9),
+    is({foo: 42, bar: true, quux: new Date(), baz: 42}, x1),
+    is({foo: 42, bar: true, quux: new Date(), baz: '42'}, x1),
 ];
 
 

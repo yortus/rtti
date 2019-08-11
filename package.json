@@ -6,8 +6,8 @@
     "typings": "dist/commonjs/index.d.ts",
     "scripts": {
         "clean": "rimraf dist/",
-        "build": "tsc -p src && parcel build src/index.ts --out-file dist/rtti.min.js --no-source-maps",
-        "test": "tsc -p test && mocha dist/test/**/*.js",
+        "build": "tsc -p tsconfig.json && parcel build src/index.ts --out-file dist/rtti.min.js --no-source-maps",
+        "test": "tsc -p tsconfig.test.json && mocha dist/test/**/*.js",
         "prepare": "symlink-dir . node_modules/rtti"
     },
     "license": "Proprietary",

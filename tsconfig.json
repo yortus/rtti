@@ -4,7 +4,8 @@
         "module": "commonjs",
         "lib": ["es2017"],
         "types": [],
-        "outDir": "../dist/commonjs",
+        "rootDir": "src",
+        "outDir": "dist/commonjs",
         "sourceMap": true,
         "declaration": true,
 
@@ -19,5 +20,6 @@
         "noUnusedLocals": true,
         "noUnusedParameters": true,
         "strictNullChecks": true
-    }
+    },
+    "include": ["src/**/*.ts"]
 }

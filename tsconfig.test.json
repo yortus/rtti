@@ -4,7 +4,8 @@
         "module": "commonjs",
         "lib": ["es2017"],
         "types": ["mocha"],
-        "outDir": "../dist/test",
+        "rootDir": "test",
+        "outDir": "dist/test",
         "sourceMap": true,
         "declaration": false,
 
@@ -19,5 +20,6 @@
         "noUnusedLocals": true,
         "noUnusedParameters": true,
         "strictNullChecks": true
-    }
+    },
+    "include": ["test/**/*.ts"]
 }
