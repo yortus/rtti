@@ -24,12 +24,11 @@
                 "--timeout",
                 "999999",
                 "--colors",
-                "${workspaceFolder}/dist/test"
+                "${workspaceFolder}/dist/commonjs"
             ],
             "outFiles": [
-                "${workspaceFolder}/dist/test/**/*.js"
-            ]
-            "internalConsoleOptions": "openOnSessionStart"
+                "${workspaceFolder}/dist/commonjs/**/*.test.js"
+            ],
         },
     ]
 }

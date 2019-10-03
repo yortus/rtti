@@ -6,11 +6,25 @@
     "typings": "dist/commonjs/index.d.ts",
     "scripts": {
         "clean": "rimraf dist/",
-        "build": "tsc -p tsconfig.json && parcel build src/index.ts --out-file dist/rtti.min.js --no-source-maps",
-        "test": "tsc -p tsconfig.test.json && mocha dist/test/**/*.js",
-        "prepare": "symlink-dir . node_modules/rtti"
+        "build": "tsc && parcel build src/index.ts --out-file dist/rtti.min.js --no-source-maps",
+        "test": "mocha dist/commonjs/**/*.test.js",
+        "postinstall": "symlink-dir . node_modules/rtti"
     },
-    "license": "Proprietary",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/yortus/rtti.git"
+    },
+    "keywords": [],
+    "author": {
+        "name": "Troy Gerwien",
+        "email": "yortus@gmail.com",
+        "url": "http://github.com/yortus/"
+    },
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/yortus/rtti/issues"
+    },
+    "dependencies": {},
     "devDependencies": {
         "@types/chai": "^4.1.4",
         "@types/mocha": "^5.2.2",

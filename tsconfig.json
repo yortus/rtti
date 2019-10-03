@@ -3,7 +3,7 @@
         "target": "es2017",
         "module": "commonjs",
         "lib": ["es2017"],
-        "types": [],
+        "types": ["mocha"],
         "rootDir": "src",
         "outDir": "dist/commonjs",
         "sourceMap": true,

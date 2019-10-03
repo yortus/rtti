@@ -30,7 +30,38 @@ type Intersection<Members extends Type[] = any> = {kind: 'intersection', members
 type Never = {kind: 'never'};
 type Null = {kind: 'null'};
 type Number = {kind: 'number'};
+
+
 type Object$<Properties extends Record<string, Type | Optional> = any> = {kind: 'object', properties: Properties};
+// const Object$ = <Properties extends Record<string, Type|Optional>>(properties: Properties) => {
+
+//     type Inst = {im: 'an object'};
+//     type Ctor = {
+//         new (): Inst;
+//         (): Inst;
+//         kind: 'object';
+//         properties: Properties;
+//     }
+
+//     const ctor: Ctor = (() => ({})) as any;
+//     return ctor;
+// };
+
+
+
+
+
+//     new <Properties extends Record<string, Type | Optional>>(properties: Properties): Object$<Properties>;
+//     <Properties extends Record<string, Type | Optional>>(properties: Properties): Object$<Properties>;
+// } = ((properties: any) => ({kind: 'object', properties})) as any;
+
+
+// class Object$<Properties extends Record<string, Type | Optional> = any> {
+//     constructor(public properties: Properties) {};
+//     kind = 'object' as const;
+// }
+
+
 type Optional<T extends Type = any> = {kind: 'optional', type: T};
 type String = {kind: 'string'};
 type Tuple<Elements extends Type[] = any> = {kind: 'tuple', elements: Elements};
@@ -51,7 +82,11 @@ const Intersection = <M extends Type[]>(...members: M): Intersection<M> => ({kin
 const Never: Never = {kind: 'never'};
 const Null: Null = {kind: 'null'};
 const Number: Number = {kind: 'number'};
+
+
 const Object$ = <P extends Record<string, Type|Optional>>(properties: P): Object$<P> => ({kind: 'object', properties});
+
+
 const Optional = <T extends Type>(type: T): Optional<T> => ({kind: 'optional', type});
 const String: String = {kind: 'string'};
 const Tuple = <E extends Type[]>(...elements: E): Tuple<E> => ({kind: 'tuple', elements});
