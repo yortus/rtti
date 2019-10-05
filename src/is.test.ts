@@ -3,7 +3,7 @@ import {is} from './is';
 import * as t from './types';
 
 
-describe('it', () => {
+describe('The is() function', () => {
 
     const values = {
         string: 'kasdjfkjasdfgasjkdhgfkasjdhgf',

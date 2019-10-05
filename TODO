@@ -5,3 +5,17 @@ TODO:
   [ ] is()
   [ ] Other builtins: RegExp, Symbol, Promise, Function, BigInt
   [ ] Other type operators: keyof, index access, mapped, conditional, spread, rest
+
+
+
+API requirments:
+  [ ] pretty-print a type: `toString(t: Type): string`
+    [ ] support/detect recursive types
+    [ ] support bounded output length
+  [ ] convert a value to a type `typeOf(v: unknown): Type`
+    [ ] explicitly reject unsupported value types, eg Map, Set, etc
+    [ ] must work with cyclic object/array references
+  [ ] check assignability between two types: `isAssignableFrom(target: Type, source: Type): boolean`
+  [ ] list validation errors for a value that is expected to be a certain type
+    [ ] convert value to type
+    [ ] use isAssignableTo

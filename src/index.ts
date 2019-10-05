@@ -1,16 +1,15 @@
 import {is} from './is';
+import {toString} from './to-string';
 import {TypeOf} from './type-of';
 import * as t from './types';
 
 
-
-
 // validate<T extends Type>(value: unknown): TypeOf<T>
-// check, ensure, verify
+// is, check, ensure, verify
 
 
 // truncate<T extends Type, U extends TypeOf<T>>(value: U): TypeOf<T>
-// purify, cleanse, screen, censor, whitelist, sanitise, remove excess props, reduce, shave
+// as, purify, cleanse, screen, censor, whitelist, sanitise, remove excess props, reduce, shave
 
 // fuzz (generate, synthesize)
 
@@ -18,19 +17,11 @@ import * as t from './types';
 // jsonStringify (toJson)
 
 
-
-
-
-export {is, TypeOf, t};
-
-
+export {is, toString, TypeOf, t};
 
 
 // class MyObj extends t.object({foo: t.string}) {}
 // let x: MyObj;
-
-
-
 
 
 // const Object$ = function() {

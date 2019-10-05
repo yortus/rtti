@@ -26,13 +26,13 @@ type Array$<Element extends Type = any> = {kind: 'array', element: Element};
 type Boolean = {kind: 'boolean'};
 type BrandedString<Brand extends string = any> = {kind: 'brandedString', brand: Brand};
 type Date$ = {kind: 'date'};
-type Intersection<Members extends Type[] = any> = {kind: 'intersection', members: Members};
+type Intersection<Members extends Type[] = any[]> = {kind: 'intersection', members: Members};
 type Never = {kind: 'never'};
 type Null = {kind: 'null'};
 type Number = {kind: 'number'};
 
 
-type Object$<Properties extends Record<string, Type | Optional> = any> = {kind: 'object', properties: Properties};
+type Object$<Properties extends Record<string, Type | Optional> = Record<string, any>> = {kind: 'object', properties: Properties};
 // const Object$ = <Properties extends Record<string, Type|Optional>>(properties: Properties) => {
 
 //     type Inst = {im: 'an object'};
@@ -64,13 +64,11 @@ type Object$<Properties extends Record<string, Type | Optional> = any> = {kind: 
 
 type Optional<T extends Type = any> = {kind: 'optional', type: T};
 type String = {kind: 'string'};
-type Tuple<Elements extends Type[] = any> = {kind: 'tuple', elements: Elements};
+type Tuple<Elements extends Type[] = any[]> = {kind: 'tuple', elements: Elements};
 type Undefined = {kind: 'undefined'};
-type Union<Members extends Type[] = any> = {kind: 'union', members: Members};
+type Union<Members extends Type[] = any[]> = {kind: 'union', members: Members};
 type Unit<T extends string | number | boolean = any> = {kind: 'unit', value: T};
 type Unknown = {kind: 'unknown'};
-
-
 
 
 const Any: Any = {kind: 'any'};
@@ -94,8 +92,6 @@ const Undefined: Undefined = {kind: 'undefined'};
 const Union = <M extends Type[]>(...members: M): Union<M> => ({kind: 'union', members});
 const Unit = <V extends string | number | boolean>(value: V): Unit<V> => ({kind: 'unit', value});
 const Unknown: Unknown = {kind: 'unknown'};
-
-
 
 
 export {

@@ -3,8 +3,6 @@ import * as t from './types';
 import {Type} from './types';
 
 
-
-
 export function is<T extends Type>(t: T, v: unknown): v is TypeOf<T>;
 export function is(t: Type, v: unknown): boolean {
     switch (t.kind) {
