@@ -2,6 +2,7 @@ import * as t from './types';
 import {Type} from './types';
 
 
+// (A) TypeOf<T> generic type operator
 export type TypeOf<T extends Type> = {0:
     T extends t.any ? any :
     T extends t.array<infer Elem> ? TypeOf<Elem>[] :
@@ -31,3 +32,6 @@ type TypeOfObject<Props extends Record<string, Type | t.optional>> =
     & {[K in OptionalPropNames<Props>]?: Props[K] extends t.optional ? TypeOf<Props[K]['type']> : 0};
 type RequiredPropNames<Props> = {[K in keyof Props]: Props[K] extends t.optional ? never : K}[keyof Props];
 type OptionalPropNames<Props> = {[K in keyof Props]: Props[K] extends t.optional ? K : never}[keyof Props];
+
+
+// (B) typeOf(v) function
