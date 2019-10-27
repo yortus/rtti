@@ -1,9 +1,9 @@
 import {expect} from 'chai';
-import {is} from './is';
+import {assert} from './assert';
 import * as t from './type-info';
 
 
-describe('The is() function', () => {
+describe('The assert() function', () => {
 
     const values = {
         string: 'kasdjfkjasdfgasjkdhgfkasjdhgf',
@@ -28,9 +28,14 @@ describe('The is() function', () => {
 
     for (let [valueName, value] of Object.entries(values)) {
         for (let [typeName, type] of Object.entries(types)) {
-            let expected = valueName.startsWith(typeName);
-            it(`Value ${JSON.stringify(value)} is ${expected ? '' : 'not '}of type '${typeName}'`, () => {
-                expect(is(type, value)).to.equal(expected);
+            let expectToThrow = !valueName.startsWith(typeName);
+            it(`Value ${JSON.stringify(value)} is ${expectToThrow ? 'not ' : ''}of type '${typeName}'`, () => {
+                if (expectToThrow) {
+                    expect(() => assert(type, value)).to.throw();
+                }
+                else {
+                    expect(() => assert(type, value)).to.not.throw();
+                }
             });
         }
     }

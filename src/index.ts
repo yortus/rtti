@@ -1,36 +1,51 @@
+import {assert} from './assert';
+import {getValidationErrors, ValidationErrors} from './get-validation-errors';
 import {is} from './is';
+import {JSON} from './json';
+import {removeExcessProperties} from './remove-excess-properties';
 import {toString} from './to-string';
-import {TypeOf} from './type-of';
-import * as t from './types';
+import {TypeFromTypeInfo} from './type-from-type-info';
+import * as t from './type-info';
 
 
-// validate<T extends Type>(value: unknown): TypeOf<T>
-// is, check, ensure, verify
+export {assert, getValidationErrors, is, JSON, removeExcessProperties, toString, TypeFromTypeInfo, t, ValidationErrors};
 
 
-// truncate<T extends Type, U extends TypeOf<T>>(value: U): TypeOf<T>
-// as, purify, cleanse, screen, censor, whitelist, sanitise, remove excess props, reduce, shave
+// TODO: ...
+/*
 
-// fuzz (generate, synthesize)
+// Types:
+TypeInfo        // discriminated union of many specific TypeInfo kinds
+TypeFromTypeInfo<T extends TypeInfo>
 
-// jsonParse (fromJson)
-// jsonStringify (toJson)
+// Free functions:
+is(t: TypeInfo, v: unknown, options: 'exact' | {...}): boolean;   // checks for structural compatibility also a type guard
+assert(t: TypeInfo, v: unknown, options: 'exact' | {...});        // like `is` but throws, also an `asserts` CFA guard
+getDescription(t: TypeInfo, options: 'full' | 'short' | {...}): string;    // aka toString
+getValidationErrors(t: TypeInfo, v: value, options: 'exact' | {...}): ValidationError[] // more info than `is`/`assert`
+trim(t: TypeInfo, v: value): ...        // return a clone of `v` with excess properties recursively removed
+// TODO: replace trim() with clone() with mode option?
+
+// Objects:
+JSON: {
+    parse(t: TypeInfo, s: string, , options: 'exact' | {...}): ...
+    stringify(t: TypeInfo, v: ..., , options: 'trim' | {...}): string
+}
 
 
-export {is, toString, TypeOf, t};
+Mode:
+'exact':
+    - reject excess properties when checking values
+    - exclude excess properties when generating values
 
+'loose':
+    - accept excess properties when checking values
+    - include excess properties when generating values
 
-// class MyObj extends t.object({foo: t.string}) {}
-// let x: MyObj;
+'robust': // see https://en.wikipedia.org/wiki/Robustness_principle
+    - accept excess properties when checking values
+    - exclude excess properties when generating values
 
-
-// const Object$ = function() {
-//     return class Object$$ {
-//         private constructor() {}
-//         test = 'blah' as const;
-//     };
-// }
-
-// class MyObj2 extends Object$() {}
-
-// let tt = MyObj2();
+'default':
+    - ???
+*/

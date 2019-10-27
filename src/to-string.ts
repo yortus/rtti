@@ -1,7 +1,7 @@
-import {Type} from './types';
+import {TypeInfo} from './type-info';
 
 
-export function toString(t: Type): string {
+export function toString(t: TypeInfo): string {
     switch (t.kind) {
         case 'any': return 'any';
         case 'array': return `Array<${toString(t.element)}>`;
@@ -10,7 +10,7 @@ export function toString(t: Type): string {
         case 'date': return 'Date';
         case 'intersection':
             if (t.members.length === 0) return `unknown`;
-            return t.members.map((m: Type) => {
+            return t.members.map((m: TypeInfo) => {
                 let result = toString(m);
                 if (m.kind === 'intersection' || m.kind === 'union') result = `(${result})`;
                 return result;
@@ -27,7 +27,7 @@ export function toString(t: Type): string {
         case 'undefined': return 'undefined';
         case 'union':
             if (t.members.length === 0) return `never`;
-            return t.members.map((m: Type) => {
+            return t.members.map((m: TypeInfo) => {
                 let result = toString(m);
                 if (m.kind === 'intersection' || m.kind === 'union') result = `(${result})`;
                 return result;

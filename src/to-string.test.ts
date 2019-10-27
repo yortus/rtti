@@ -1,6 +1,6 @@
 import {expect} from 'chai';
 import {toString} from './to-string';
-import * as t from './types';
+import * as t from './type-info';
 
 
 describe('The toString() function', () => {

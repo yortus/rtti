@@ -1,21 +1,30 @@
 TODO:
   [x] fix: TypeOf<Object> for optional props
   [x] fix: t.optional is *not* a Type, it is only valid inside objects and tuples
+  [x] is()
+  [x] JSON.parse
+  [x] JSON.stringify
+  [x] assert(): use TS3.7 'asserts' return type annotation
+  [ ] removeExcessProperties
   [ ] fix: support t.optional in tuples
-  [ ] is()
+  [ ] fix: JSON.parse reviver for special values
+  [ ] fix: JSON.stringify replacer for special values
+  [ ] fix: JSON.stringify: use removeExcessProperties
+  [ ] add error test cases for JSON.parse/stringify
+
   [ ] Other builtins: RegExp, Symbol, Promise, Function, BigInt
   [ ] Other type operators: keyof, index access, mapped, conditional, spread, rest
 
+  [ ] support/detect cycles / self-referential types and values
 
 
 API requirments:
   [ ] pretty-print a type: `toString(t: Type): string`
+    [x] basic support
     [ ] support/detect recursive types
     [ ] support bounded output length
   [ ] convert a value to a type `typeOf(v: unknown): Type`
     [ ] explicitly reject unsupported value types, eg Map, Set, etc
     [ ] must work with cyclic object/array references
   [ ] check assignability between two types: `isAssignableFrom(target: Type, source: Type): boolean`
-  [ ] list validation errors for a value that is expected to be a certain type
-    [ ] convert value to type
-    [ ] use isAssignableTo
+  [x] list validation errors for a value that is expected to be a certain type
