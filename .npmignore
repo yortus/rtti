@@ -11,6 +11,7 @@ extras/
 *.js.map
 *.log
 *.test.js
+*.test.d.ts
 tsconfig.json
 README.md
 TODO.md
