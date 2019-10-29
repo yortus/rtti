@@ -7,7 +7,7 @@
     "scripts": {
         "clean": "rimraf dist/",
         "build": "tsc && parcel build src/index.ts --out-file dist/rtti.min.js --no-source-maps",
-        "test": "mocha dist/commonjs/**/*.test.js",
+        "test": "mocha \"dist/commonjs/**/*.test.js\"",
         "prepare": "symlink-dir . node_modules/rtti"
     },
     "repository": {
