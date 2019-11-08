@@ -1,108 +1,66 @@
-export const removeExcessProperties = 0;
-
-// import cloneDeep from 'lodash.clonedeep';
-// import {assert} from './assert';
-// import {TypeFromTypeInfo} from './type-from-type-info';
-// import {TypeInfo, intersection} from './type-info';
-// import * as t from './type-info';
+import cloneDeep from 'lodash.clonedeep';
+import {is} from './is';
+import {TypeFromTypeInfo} from './type-from-type-info';
+import {TypeInfo} from './type-info';
+import * as t from './type-info';
 
 
-// export function removeExcessProperties<T extends TypeInfo>(t: T, v: TypeFromTypeInfo<T>): TypeFromTypeInfo<T>;
-// export function removeExcessProperties(t: TypeInfo, v: unknown) {
-//     assert(t, v);
-//     switch (t.kind) {
+// TODO: doc... precond: The runtime value `v` conforms to the type described by `t`.
+export function removeExcessProperties<T extends TypeInfo>(t: T, v: TypeFromTypeInfo<T>): TypeFromTypeInfo<T>;
+export function removeExcessProperties(ti: TypeInfo, v: unknown) {
+    switch (ti.kind) {
 
-//         case 'array':
-//             return (v as any[]).map(el => removeExcessProperties(t.element, el));
+        case 'array':
+        case 'tuple': {
+            let ar = v as unknown[];
+            return ar.map((el, i) => removeExcessProperties(ti.kind === 'tuple' ? ti.elements[i] : ti.element, el));
+        }
 
-//         case 'intersection': {
-//             // TODO: ...
+        case 'object': {
+            let obj = v as any;
+            let clonedObj = {} as any;
+            let properties = ti.properties as Record<string, TypeInfo | t.optional>;
+            for (let propName of Object.keys(properties)) {
+                let propType = properties[propName];
+                propType = propType.kind === 'optional' ? propType.type as TypeInfo : propType;
+                if (obj.hasOwnProperty(propName)) clonedObj[propName] = removeExcessProperties(propType, obj[propName]);
+            }
+            return clonedObj;
+        }
+            
+        case 'intersection': {
+            // Create a t.object with the union of all the properties of intersection members which are t.objects.
+            let combinedProps = t.object(ti.members.reduce(
+                (props, m: t.TypeInfo) => m.kind === 'object' ? Object.assign(props, m.properties) : props,
+                {} as Record<string, TypeInfo>
+            ));
 
-//             // Q: when is this operation valid?
-//             // A: v and all t.members are objects -OR- v and all t.members are primitives
+            // Do excess property removal against the t.object created above.
+            return removeExcessProperties(combinedProps, v as object);
+        }
 
-//             // Q: what properties to copy in an intersection of several objects? eg {s: string} & {n: number}
-//             // A: properties that are in *some* member of the intersection
+        case 'union': {
+            // Find the first union member type that matches the value `v`. There must be one according to preconds.
+            let matchingType = (ti.members as TypeInfo[]).find(m => is(m, v))!;
 
-//             // Q: what about optional properties? how do they affect this?
-//             // A: for excess-property-checking purposes, there is no difference between required and optional properties
+            // Do excess property removal against the matching member type found above.
+            return removeExcessProperties(matchingType, v);
+        }
 
-//             if (typeof v !== 'object' || v === null) return cloneDeep(v);
-//             let clonedObj = {} as any;
+        case 'any':
+        case 'boolean':
+        case 'brandedString':
+        case 'date':
+        case 'never':
+        case 'null':
+        case 'number':
+        case 'string':
+        case 'undefined':
+        case 'unit':
+        case 'unknown':
+            return cloneDeep(v);
 
-//             let objectTypes = (t.members as TypeInfo[]).filter(m => m.kind === 'object') as t.object[];
-
-//             let properties = objectTypes.reduce(
-//                 (props, objectType) => {
-//                     for (let propName of Object.keys(objectType.properties)) {
-//                         let prop = objectType.properties[propName] as TypeInfo | t.optional;
-//                         let propType = prop.kind === 'optional' ? prop.type as TypeInfo : prop;
-//                         if (!props.hasOwnProperty(propName)) {
-//                             props[propName] = propType;
-//                         }
-//                         else {
-//                             props[propName] = intersection
-//                         }
-
-
-//                     }
-//                     return props;
-//                 },
-//                 {} as Record<string, any>
-//             );
-
-
-//             for (let propName of Object.keys(properties)) {
-//                 let propType = properties[propName];
-//                 propType = propType.kind === 'optional' ? propType.type as TypeInfo : propType;
-//                 if (v.hasOwnProperty(propName)) clonedObj[propName] = removeExcessProperties(propType, v[propName]);
-//             }
-//             return clonedObj;
-
-
-
-
-
-//             throw new Error('Not supported');
-//         }
-
-//         case 'object': {
-//             let clonedObj = {} as any;
-//             let properties = t.properties as Record<string, TypeInfo | t.optional>;
-//             for (let propName of Object.keys(properties)) {
-//                 let propType = properties[propName];
-//                 propType = propType.kind === 'optional' ? propType.type as TypeInfo : propType;
-//                 if (v.hasOwnProperty(propName)) clonedObj[propName] = removeExcessProperties(propType, v[propName]);
-//             }
-//             return clonedObj;
-//         }
-
-//         case 'tuple':
-//             return (v as any[]).map((el, i) => removeExcessProperties(t.elements[i], el));
-    
-//         case 'union':
-//             // TODO: ...
-
-//             // Q: when is this operation valid?
-//             // A: v and all t.members are objects -OR- v and all t.members are primitives
-
-//             // Q: what properties to copy in a union of several objects? eg {s: string} | {n: number}
-//             // A: properties that are in *some* member of the union (after filtering to union members that `v` conforms to)
-//             throw new Error('Not supported');
-
-//         case 'any':
-//         case 'boolean':
-//         case 'brandedString':
-//         case 'date':
-//         case 'never':
-//         case 'null':
-//         case 'number':
-//         case 'string':
-//         case 'undefined':
-//         case 'unit':
-//         case 'unknown':
-//             return cloneDeep(v);
-
-//         //default: throw ((type: never) => new Error(`Unhandled type '${type}'`))(t);
-//     }
-// }
+        default:
+            ((type: never) => { throw new Error(`Unhandled type '${type}'`) })(ti);
+    }
+}

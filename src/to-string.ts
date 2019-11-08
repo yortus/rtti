@@ -1,4 +1,4 @@
-import {TypeInfo} from './type-info';
+import {optional, TypeInfo} from './type-info';
 
 
 export function toString(t: TypeInfo): string {
@@ -20,7 +20,10 @@ export function toString(t: TypeInfo): string {
         case 'number': return 'number';
         case 'object':
             let propNames = Object.keys(t.properties);
-            let kvps = propNames.map(n => `${n}: ${toString(t.properties[n])}`);
+            let kvps = propNames.map(n => {
+                let prop = t.properties[n] as TypeInfo | optional;
+                return `${n}: ${ toString(prop.kind === 'optional'? prop.type : prop)}`;
+            });
             return `{${kvps.join(', ')}}`;
         case 'string': return 'string';
         case 'tuple': return `[${t.elements.map(toString).join(', ')}]`;
@@ -34,6 +37,6 @@ export function toString(t: TypeInfo): string {
             }).join(' | ');
         case 'unit': return JSON.stringify(t.value);
         case 'unknown': return 'unknown';
-        default: throw ((type: never) => new Error(`Unhandled type '${type}'`))(t);
+        default: ((type: never) => { throw new Error(`Unhandled type '${type}'`) })(t);
     }
 }

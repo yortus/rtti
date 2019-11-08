@@ -2,11 +2,11 @@ import {inspect} from 'util';
 import {getValidationErrors} from './get-validation-errors';
 import {is} from './is';
 import {toString} from './to-string';
-// was... restore... import {TypeFromTypeInfo} from './type-from-type-info';
+import {TypeFromTypeInfo} from './type-from-type-info';
 import {TypeInfo} from './type-info';
 
 
-export function assert<T extends TypeInfo>(t: T, v: unknown) { // TODO: was... restore for ts3.7: asserts v is TypeFromTypeInfo<T> {
+export function assert<T extends TypeInfo>(t: T, v: unknown): asserts v is TypeFromTypeInfo<T> {
     if (is(t, v)) return;
     let d = inspect(v, {depth: 0, compact: true, breakLength: Infinity});
     throw Object.assign(

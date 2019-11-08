@@ -98,7 +98,7 @@ export function getValidationErrors<T extends TypeInfo>(t: T, v: unknown): Valid
             case 'unknown':
                 return;
             default:
-                throw ((type: never) => new Error(`Unhandled type '${type}'`))(t);
-        }
+                ((type: never) => { throw new Error(`Unhandled type '${type}'`) })(t);
+            }
     }
 }

@@ -39,6 +39,6 @@ export function is(t: TypeInfo, v: unknown): boolean {
         case 'union': return (t.members as TypeInfo[]).some(type => is(type, v));
         case 'unit': return v === t.value;
         case 'unknown': return true;
-        default: throw ((type: never) => new Error(`Unhandled type '${type}'`))(t);
+        default: ((type: never) => { throw new Error(`Unhandled type '${type}'`) })(t);
     }
 }
