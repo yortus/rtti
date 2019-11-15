@@ -1,12 +1,14 @@
 {
     "name": "rtti",
-    "version": "0.1.6",
+    "version": "0.1.7",
     "description": "",
-    "main": "dist/rtti.min.js",
+    "main": "dist/commonjs/index.js",
+    "main:OLD": "dist/rtti.min.js",
     "typings": "dist/commonjs/index.d.ts",
     "scripts": {
         "clean": "rimraf dist/",
-        "build": "tsc && parcel build src/index.ts --out-file dist/rtti.min.js --no-source-maps",
+        "build": "tsc",
+        "build:OLD": "tsc && parcel build src/index.ts --out-file dist/rtti.min.js --no-source-maps",
         "test": "mocha \"dist/commonjs/**/*.test.js\"",
         "prepare": "symlink-dir . node_modules/rtti"
     },
