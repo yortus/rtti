@@ -8,7 +8,6 @@ extras/
 .cache/
 *.ts
 !*.d.ts
-*.js.map
 *.log
 *.test.js
 *.test.d.ts
