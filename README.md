@@ -16,7 +16,7 @@ There is no need to declare any type twice (i.e., once for JS and once TS), sinc
 ## Usage Example
 
 ```ts
-import {getValidationErrors, is, t, toString} from 'rtti';
+import {getValidationErrors, is, t, toString, TypeFromTypeInfo} from 'rtti';
 
 const someType = t.union(
     t.unit('foo'),
@@ -47,15 +47,15 @@ type SomeType = TypeFromTypeInfo<typeof someType>; // type SomeType = "foo" | "b
 
 ## API
 
-`t.string`, `t.object(...)`, etc
+##### `t.string`, `t.object(...)`, etc
 Construct a `TypeInfo` instance that matches a particular set of runtime values.
 <br/>
 
-`assert(type: TypeInfo, value: unknown): void`
+##### `assert(type: TypeInfo, value: unknown): void`
 Ensures the given `value` matches the given `type`, otherwise throws an error.
 <br/>
 
-`getValidationErrors(type: TypeInfo, value: unknown): ValidationErrors`
+##### `getValidationErrors(type: TypeInfo, value: unknown): ValidationErrors`
 Returns a list of descriptive validation errors explaining why the given `value` does not match the given `type`. The `ValidationErrors` type is defined as follows:
 ```
 interface ValidationErrors {
@@ -65,23 +65,23 @@ interface ValidationErrors {
 ```
 <br/>
 
-`is(type: TypeInfo, value: unknown): boolean`
+##### `is(type: TypeInfo, value: unknown): boolean`
 Returns `true` if the given `value` matches the given `type`, or `false` otherwise.
 <br/>
 
-`removeExcessProperties(type: TypeInfo, value: TypeFromTypeInfo<typeof type>): TypeFromTypeInfo<typeof type>`
+##### `removeExcessProperties(type: TypeInfo, value: TypeFromTypeInfo<typeof type>): TypeFromTypeInfo<typeof type>`
 Returns a copy of the given `value`, but where any properties not declared in `type` have been removed.
 <br/>
 
-`toString(type: TypeInfo): string`
+##### `toString(type: TypeInfo): string`
 Returns a descriptive string for the given `type`.
 <br/>
 
-`TypeFromTypeInfo<T extends TypeInfo>`
+##### `TypeFromTypeInfo<T extends TypeInfo>`
 A TS type-level operator that infers the TS type corresponding to the given `TypeInfo` type.
 <br/>
 
-`TypeInfo`
+##### `TypeInfo`
 An object used by the RTTI library to describes a set of matching runtime values. These objects may be created using the `t.<kind>` syntax. See the following table for examples.
 <br/>
 
