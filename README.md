@@ -3,8 +3,8 @@
 **Runtime type information for JavaScript and TypeScript programs.**
 
 This library bring the benefits of TypeScript's type system to runtime code. By declaring types using runtime constructs, it is possible to add an extra level of runtime type safety that static checking alone cannot provide. For example:
-- ensure that a parsed JSON string produces an value that conforms to an expected schema
-- check that a HTTP request body confirms to an expected schema
+- ensure that a parsed JSON string produces a value that conforms to an expected schema
+- verify that a HTTP request body conforms to an expected schema
 - ensure that a HTTP response body does not send additional properties other that those indended for the client
 
 There is no need to declare any type twice (i.e., once for JS and once TS), since the provided `TypeFromTypeInfo` operator will infer the TypeScript type for any given runtime `TypeInfo` value.
@@ -39,18 +39,23 @@ console.log(is(someType, 'baz'));
 //     warnings: []
 // }
 console.log(getValidationErrors(someType, 'baz'));
+
+// TypeScript only - static type inference:
+type SomeType = TypeFromTypeInfo<typeof someType>; // type SomeType = "foo" | "bar"
 ```
 
 
 ## API
 
-### `t.string`, `t.object(...)`, etc
+`t.string`, `t.object(...)`, etc
 Construct a `TypeInfo` instance that matches a particular set of runtime values.
+<br/>
 
-### `assert(type: TypeInfo, value: unknown): void`
+`assert(type: TypeInfo, value: unknown): void`
 Ensures the given `value` matches the given `type`, otherwise throws an error.
+<br/>
 
-### `getValidationErrors(type: TypeInfo, value: unknown): ValidationErrors`
+`getValidationErrors(type: TypeInfo, value: unknown): ValidationErrors`
 Returns a list of descriptive validation errors explaining why the given `value` does not match the given `type`. The `ValidationErrors` type is defined as follows:
 ```
 interface ValidationErrors {
@@ -58,21 +63,27 @@ interface ValidationErrors {
     warnings: Array<{path: string, message: string}>;
 }
 ```
+<br/>
 
-### `is(type: TypeInfo, value: unknown): boolean`
+`is(type: TypeInfo, value: unknown): boolean`
 Returns `true` if the given `value` matches the given `type`, or `false` otherwise.
+<br/>
 
-### `removeExcessProperties(type: TypeInfo, value: TypeFromTypeInfo<typeof type>): TypeFromTypeInfo<typeof type>`
+`removeExcessProperties(type: TypeInfo, value: TypeFromTypeInfo<typeof type>): TypeFromTypeInfo<typeof type>`
 Returns a copy of the given `value`, but where any properties not declared in `type` have been removed.
+<br/>
 
-### `toString(type: TypeInfo): string`
+`toString(type: TypeInfo): string`
 Returns a descriptive string for the given `type`.
+<br/>
 
-### `TypeFromTypeInfo<T extends TypeInfo>`
+`TypeFromTypeInfo<T extends TypeInfo>`
 A TS type-level operator that infers the TS type corresponding to the given `TypeInfo` type.
+<br/>
 
-### `TypeInfo`
+`TypeInfo`
 An object used by the RTTI library to describes a set of matching runtime values. These objects may be created using the `t.<kind>` syntax. See the following table for examples.
+<br/>
 
 
 ## Supported Types
