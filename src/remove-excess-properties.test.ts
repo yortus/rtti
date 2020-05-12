@@ -93,6 +93,13 @@ describe('The removeExcessProperties() function', () => {
             value: {foo: {x: true, str: 'hi', num: 3.14}, bar: 43},
             expected: {foo: {x: true, str: 'hi', num: 3.14}, bar: 43},
         },
+
+        // Regression test for https://github.com/yortus/rtti/issues/3
+        {
+            type: t.intersection(t.intersection(t.object({a: t.any}), t.object({b: t.any})), t.object({c: t.any})),
+            value: Object.assign([1, 2, 4], {a: 42, b: 'hi', c: true, d: [1, 2, 3]}),
+            expected: {a: 42, b: 'hi', c: true},
+        },
     ];
 
     for (let {type, value, expected} of tests) {

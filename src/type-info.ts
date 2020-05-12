@@ -45,7 +45,7 @@ const Array = <E extends TypeInfo>(element: E): Array<E> => ({kind: 'array', ele
 const Boolean: Boolean = {kind: 'boolean'};
 const BrandedString = <Brand extends string>(brand: Brand): BrandedString<Brand> => ({kind: 'brandedString', brand});
 const Date: Date = {kind: 'date'};
-const Intersection = <M extends TypeInfo[]>(...members: M): Intersection<M> => ({kind: 'intersection', members});
+const Intersection = <M extends TypeInfo[]>(...members: M): Intersection<M> => flatten({kind: 'intersection', members});
 const Never: Never = {kind: 'never'};
 const Null: Null = {kind: 'null'};
 const Number: Number = {kind: 'number'};
@@ -54,7 +54,7 @@ const Optional = <T extends TypeInfo>(type: T): Optional<T> => ({kind: 'optional
 const String: String = {kind: 'string'};
 const Tuple = <E extends TypeInfo[]>(...elements: E): Tuple<E> => ({kind: 'tuple', elements});
 const Undefined: Undefined = {kind: 'undefined'};
-const Union = <M extends TypeInfo[]>(...members: M): Union<M> => ({kind: 'union', members});
+const Union = <M extends TypeInfo[]>(...members: M): Union<M> => flatten({kind: 'union', members});
 const Unit = <V extends string | number | boolean>(value: V): Unit<V> => ({kind: 'unit', value});
 const Unknown: Unknown = {kind: 'unknown'};
 
@@ -78,3 +78,14 @@ export {
     Unit as unit,
     Unknown as unknown,
 };
+
+
+// Helper function to flatten directly-nested intersections and unions.
+function flatten<T extends Intersection<TypeInfo[]> | Union<TypeInfo[]>>(t: T) {
+    const kind = t.kind;
+    const members = t.members.reduce(
+        (flattened, member) => flattened.concat(member.kind === kind ? member.members : member),
+        [] as TypeInfo[],
+    );
+    return {kind, members} as T;
+}
