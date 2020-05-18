@@ -22,11 +22,9 @@ export function is(t: TypeInfo, v: unknown): boolean {
                 let propType = properties[propName];
                 let isOptional = propType.kind === 'optional';
                 propType = propType.kind === 'optional' ? propType.type as TypeInfo : propType;
-                if (!v.hasOwnProperty(propName)) {
-                    if (isOptional) continue;
-                    return false;
-                }
-                if (!is(propType, (v as any)[propName])) return false;
+                let propValue = (v as any)[propName];
+                if (propValue === undefined && isOptional) continue;
+                if (!is(propType, propValue)) return false;
             }
             return true;
         case 'string': return typeof v === 'string';

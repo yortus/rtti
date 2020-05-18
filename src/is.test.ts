@@ -14,6 +14,8 @@ describe('The is() function', () => {
         objectWithFoo: {foo: 'bar'},
         array: [1, 'foo', false],
         arrayOfNum: [1, 2, 3, 4],
+        objectWithOptionalBarMissing: {baz: 10},
+        objectWithOptionalBarUndefined: {bar: undefined, baz: 10},
     };
 
     const types = {
@@ -24,6 +26,7 @@ describe('The is() function', () => {
         objectWithFoo: t.object({foo: t.string}),
         array: t.array(t.unknown),
         arrayOfNum: t.array(t.number),
+        objectWithOptionalBar: t.object({bar: t.optional(t.string), baz: t.number}),
     };
 
     for (let [valueName, value] of Object.entries(values)) {
