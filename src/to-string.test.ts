@@ -27,12 +27,23 @@ describe('The toString() function', () => {
             text: '{foo: string}',
         },
         {
+            type: t.object({foo: t.optional(t.string)}),
+            text: '{foo?: string}',
+        },
+        {
             type: t.array(t.unknown),
             text: 'Array<unknown>',
         },
         {
             type: t.array(t.number),
             text: 'Array<number>',
+        },
+        {
+            type: t.intersection(
+                t.object({foo: t.string}),
+                t.object({bar: t.number}),
+            ),
+            text: '{foo: string} & {bar: number}',
         },
     ];
 

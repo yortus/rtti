@@ -22,7 +22,8 @@ export function toString(t: TypeInfo): string {
             let propNames = Object.keys(t.properties);
             let kvps = propNames.map(n => {
                 let prop = t.properties[n] as TypeInfo | optional;
-                return `${n}: ${ toString(prop.kind === 'optional'? prop.type : prop)}`;
+                let isOpt = prop.kind === 'optional';
+                return `${n}${isOpt ? '?' : ''}: ${toString(prop.kind === 'optional' ? prop.type : prop)}`;
             });
             return `{${kvps.join(', ')}}`;
         case 'string': return 'string';

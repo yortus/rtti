@@ -57,6 +57,18 @@ describe('The getValidationErrors() function', () => {
             ],
             expectedWarnings: [],
         },
+        {
+            type: t.object({foo: t.optional(t.string)}),
+            value: {foo: undefined},
+            expectedErrors: [],
+            expectedWarnings: [],
+        },
+        {
+            type: t.object({foo: t.optional(t.object({bar: t.number}))}),
+            value: {foo: undefined},
+            expectedErrors: [],
+            expectedWarnings: [],
+        },
     ];
 
     for (let {type, value, expectedErrors, expectedWarnings} of tests) {

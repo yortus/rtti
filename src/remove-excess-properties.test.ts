@@ -44,6 +44,16 @@ describe('The removeExcessProperties() function', () => {
             expected: {},
         },
         {
+            type: t.object({foo: t.optional(t.string)}),
+            value: {foo: undefined, quux: 'hi'},
+            expected: {},
+        },
+        {
+            type: t.object({foo: t.optional(t.object({bar: t.number}))}),
+            value: {foo: undefined, quux: 'hi'},
+            expected: {},
+        },
+        {
             type: t.object({foo: t.object({str: t.string, num: t.number})}),
             value: {foo: {str: 'hi', num: 3.14}},
             expected: {foo: {str: 'hi', num: 3.14}},

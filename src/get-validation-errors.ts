@@ -64,8 +64,9 @@ export function getValidationErrors<T extends TypeInfo>(t: T, v: unknown): Valid
                     let propType = properties[propName];
                     let isOptional = propType.kind === 'optional';
                     propType = propType.kind === 'optional' ? propType.type as TypeInfo : propType;
-                    if (!v.hasOwnProperty(propName) && isOptional) continue;
-                    recurse(propType, (v as any)[propName], `${path}.${propName}`)
+                    let propValue = (v as any)[propName];
+                    if (propValue === undefined && isOptional) continue;
+                    recurse(propType, propValue, `${path}.${propName}`);
                 }
                 return;
             case 'string':

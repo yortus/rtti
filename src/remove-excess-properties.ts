@@ -22,8 +22,11 @@ export function removeExcessProperties(ti: TypeInfo, v: unknown) {
             let properties = ti.properties as Record<string, TypeInfo | t.optional>;
             for (let propName of Object.keys(properties)) {
                 let propType = properties[propName];
+                let isOptional = propType.kind === 'optional';
                 propType = propType.kind === 'optional' ? propType.type as TypeInfo : propType;
-                if (obj.hasOwnProperty(propName)) clonedObj[propName] = removeExcessProperties(propType, obj[propName]);
+                let propValue = obj[propName];
+                if (propValue === undefined && isOptional) continue;
+                clonedObj[propName] = removeExcessProperties(propType, obj[propName]);
             }
             return clonedObj;
         }
