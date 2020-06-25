@@ -1,6 +1,6 @@
 {
     "name": "rtti",
-    "version": "0.3.2",
+    "version": "0.3.3",
     "description": "",
     "main": "dist/commonjs/index.js",
     "main:OLD": "dist/rtti.min.js",
