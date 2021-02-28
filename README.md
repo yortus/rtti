@@ -5,7 +5,7 @@
 This library bring the benefits of TypeScript's type system to runtime code. By declaring types using runtime constructs, it is possible to add an extra level of runtime type safety that static checking alone cannot provide. For example:
 - ensure that a parsed JSON string produces a value that conforms to an expected schema
 - verify that a HTTP request body conforms to an expected schema
-- ensure that a HTTP response body does not send additional properties other that those indended for the client
+- ensure that a HTTP response body does not send additional properties other that those intended for the client
 
 There is no need to declare any type twice (i.e., once for JS and once TS), since the provided `TypeFromTypeInfo` operator will infer the TypeScript type for any given runtime `TypeInfo` value.
 
