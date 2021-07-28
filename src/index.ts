@@ -1,4 +1,5 @@
 import {assert} from './assert';
+import {getJsonSchema} from './get-json-schema';
 import {getValidationErrors, ValidationErrors} from './get-validation-errors';
 import {is} from './is';
 import {JSON} from './json';
@@ -9,5 +10,5 @@ import {TypeInfo} from './type-info';
 import * as t from './type-info';
 
 
-export {assert, getValidationErrors, is, JSON, removeExcessProperties, toString, t};
+export {assert, getJsonSchema, getValidationErrors, is, JSON, removeExcessProperties, toString, t};
 export {TypeFromTypeInfo, TypeInfo, ValidationErrors};
