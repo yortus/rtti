@@ -1,8 +1,7 @@
-import {TypeFromDescriptor} from '../type-from-descriptor';
-import {Descriptor, optional} from '../descriptors';
+import {Descriptor, Optional} from '../descriptors';
 import {CheckOptions} from './check';
 
-export function isValid<D extends Descriptor>(d: D, v: unknown, options?: CheckOptions): v is TypeFromDescriptor<D> {
+export function isValid(d: Descriptor, v: unknown, options?: CheckOptions): boolean {
     switch (d.kind) {
         case 'any': return true;
         case 'array': return Array.isArray(v) && v.every(el => isValid(d.element, el, options));
@@ -15,7 +14,7 @@ export function isValid<D extends Descriptor>(d: D, v: unknown, options?: CheckO
         case 'number': return typeof v === 'number';
         case 'object': {
             if (typeof v !== 'object' || v === null) return false;
-            let propDescs = d.properties as Record<string, Descriptor | optional>;
+            let propDescs = d.properties as Record<string, Descriptor | Optional>;
             let propNames = Object.keys(propDescs);
             for (let propName of propNames) {
                 let propDesc = propDescs[propName];

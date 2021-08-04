@@ -1,10 +1,8 @@
-import {TypeFromDescriptor} from '../type-from-descriptor';
-import {Descriptor, optional} from '../descriptors';
+import {Descriptor, Optional} from '../descriptors';
 
 // TODO: better fuzzing/randomization. Don't always return same values eg for any/string/number/etc
 // TODO: add tests
 
-export function generateValue<D extends Descriptor>(d: D): TypeFromDescriptor<D>;
 export function generateValue(d: Descriptor): unknown {
     switch (d.kind) {
         case 'any': return ['any', 'value'];
@@ -20,7 +18,7 @@ export function generateValue(d: Descriptor): unknown {
         case 'null': return null;
         case 'number': return nat(1000);
         case 'object': {
-            let propDescs = d.properties as Record<string, Descriptor | optional>;
+            let propDescs = d.properties as Record<string, Descriptor | Optional>;
             let propNames = Object.keys(propDescs);
             const obj: any = {};
             for (let propName of propNames) {

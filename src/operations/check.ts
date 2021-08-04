@@ -1,6 +1,6 @@
 import {inspect} from 'util';
 import {isValid} from './is-valid';
-import {optional, Descriptor} from '../descriptors';
+import {Descriptor, Optional} from '../descriptors';
 
 export interface CheckOptions {
     // default: true
@@ -12,7 +12,7 @@ export type CheckResult =
     | {isValid: false, errors: Array<{path: string, message: string}>}
 ;
 
-export function check<D extends Descriptor>(d: D, v: unknown, options?: CheckOptions): CheckResult {
+export function check(d: Descriptor, v: unknown, options?: CheckOptions): CheckResult {
     const allowExcessProperties = options?.allowExcessProperties ?? true;
     let errors = [] as Array<{path: string, message: string}>;
     recurse(d, v, '^');
@@ -63,7 +63,7 @@ export function check<D extends Descriptor>(d: D, v: unknown, options?: CheckOpt
                 let excessPropNames = actualPropNames.filter(n => !requiredPropNames.includes(n) && !optionalPropNames.includes(n));
                 if (missingPropNames.length > 0) errors.push({path, message: `The following properties are missing: ${missingPropNames.join(', ')}`});
                 if (excessPropNames.length > 0 && !allowExcessProperties) errors.push({path, message: `The object has excess properties: ${excessPropNames.join(', ')}`});
-                let properties = d.properties as Record<string, Descriptor | optional>;
+                let properties = d.properties as Record<string, Descriptor | Optional>;
                 for (let propName of Object.keys(properties)) {
                     let propType = properties[propName];
                     let isOptional = propType.kind === 'optional';

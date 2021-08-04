@@ -1,4 +1,4 @@
-import {optional, Descriptor} from '../descriptors';
+import {Descriptor, Optional} from '../descriptors';
 
 // TODO: return compact/abbreviated string for complex types
 
@@ -22,7 +22,7 @@ export function toString(d: Descriptor): string {
         case 'object':
             let propNames = Object.keys(d.properties);
             let kvps = propNames.map(n => {
-                let propDesc = d.properties[n] as Descriptor | optional;
+                let propDesc = d.properties[n] as Descriptor | Optional;
                 let isOpt = propDesc.kind === 'optional';
                 return `${n}${isOpt ? '?' : ''}: ${toString(propDesc.kind === 'optional' ? propDesc.type : propDesc)}`;
             });

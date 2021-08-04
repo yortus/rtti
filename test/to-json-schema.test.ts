@@ -4,7 +4,7 @@ import {toString} from './to-string';
 import * as t from './type-info';
 
 
-describe('The getJsonSchema() function', () => {
+describe('The toJsonSchema() function', () => {
     const testCases: Array<{type: t.TypeInfo, jsonSchema: unknown}> = [
         {
             type: t.string,
