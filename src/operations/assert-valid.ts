@@ -1,5 +1,5 @@
 import {inspect} from 'util';
-import {Descriptor} from '../descriptors';
+import {Descriptor} from '../descriptor';
 import {check, CheckOptions} from './check';
 import {toString} from './to-string';
 

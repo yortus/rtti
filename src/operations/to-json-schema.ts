@@ -1,4 +1,4 @@
-import {Descriptor, Optional} from '../descriptors';
+import {Descriptor, Optional} from '../descriptor';
 
 export function toJsonSchema(d: Descriptor): unknown {
     switch (d.kind) {

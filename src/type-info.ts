@@ -1,5 +1,5 @@
-import {Descriptor} from './descriptors';
-import {Array, BrandedString, Intersection, Object, Optional, Tuple, Union, Unit} from './descriptors';
+import {Descriptor} from './descriptor';
+import {Array, BrandedString, Intersection, Object, Optional, Tuple, Union, Unit} from './descriptor';
 import * as op from './operations';
 import {Anonymize} from './utils';
 

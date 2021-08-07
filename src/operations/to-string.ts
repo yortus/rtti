@@ -1,4 +1,4 @@
-import {Descriptor, Optional} from '../descriptors';
+import {Descriptor, Optional} from '../descriptor';
 
 // TODO: return compact/abbreviated string for complex types
 

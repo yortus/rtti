@@ -1,4 +1,4 @@
-import {Descriptor, Optional} from '../descriptors';
+import {Descriptor, Optional} from '../descriptor';
 
 // TODO: better fuzzing/randomization. Don't always return same values eg for any/string/number/etc
 // TODO: add tests

@@ -1,6 +1,6 @@
 import {inspect} from 'util';
 import {isValid} from './is-valid';
-import {Descriptor, Optional} from '../descriptors';
+import {Descriptor, Optional} from '../descriptor';
 
 export interface CheckOptions {
     // default: true

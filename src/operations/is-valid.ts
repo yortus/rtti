@@ -1,4 +1,4 @@
-import {Descriptor, Optional} from '../descriptors';
+import {Descriptor, Optional} from '../descriptor';
 import {CheckOptions} from './check';
 
 export function isValid(d: Descriptor, v: unknown, options?: CheckOptions): boolean {

@@ -1,5 +1,5 @@
 import cloneDeep from 'lodash.clonedeep';
-import {Descriptor, Object, Optional} from '../descriptors';
+import {Descriptor, Object, Optional} from '../descriptor';
 import {isValid} from './is-valid';
 
 
