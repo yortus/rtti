@@ -1,9 +1,13 @@
 import {inspect} from 'util';
 import {isValid} from './is-valid';
-import {Descriptor, Optional} from '../descriptor';
+import {Descriptor} from '../descriptor';
 
+/** Options for checking whether a value confirms to a type. */
 export interface CheckOptions {
-    // default: true
+    /**
+     * If true, excess properties (ie properties not declared as part of the type) that are present in the value being
+     * checked are ignored during type checking. If false, excess properties are flagged as errors. Default value: true.
+     */
     allowExcessProperties?: boolean;
 }
 
@@ -38,7 +42,7 @@ export function check(d: Descriptor, v: unknown, options?: CheckOptions): CheckR
                 if (!(v instanceof Date)) errors.push({path, message: `Expected a Date object but got ${desc}`});
                 return;
             case 'intersection':
-                let isEvery = (d.members as Descriptor[]).every(t => isValid(t, v, options));
+                let isEvery = d.members.every(t => isValid(t, v, options));
                 // TODO: improve this message with specifics
                 if (!isEvery) errors.push({path, message: `The value ${desc} does not conform to the intersection type`});
                 return;
@@ -63,9 +67,8 @@ export function check(d: Descriptor, v: unknown, options?: CheckOptions): CheckR
                 let excessPropNames = actualPropNames.filter(n => !requiredPropNames.includes(n) && !optionalPropNames.includes(n));
                 if (missingPropNames.length > 0) errors.push({path, message: `The following properties are missing: ${missingPropNames.join(', ')}`});
                 if (excessPropNames.length > 0 && !allowExcessProperties) errors.push({path, message: `The object has excess properties: ${excessPropNames.join(', ')}`});
-                let properties = d.properties as Record<string, Descriptor | Optional>;
-                for (let propName of Object.keys(properties)) {
-                    let propType = properties[propName];
+                for (let propName of Object.keys(d.properties)) {
+                    let propType = d.properties[propName];
                     let isOptional = propType.kind === 'optional';
                     propType = propType.kind === 'optional' ? propType.type as Descriptor : propType;
                     let propValue = (v as any)[propName];
@@ -96,7 +99,7 @@ export function check(d: Descriptor, v: unknown, options?: CheckOptions): CheckR
                 if (v !== undefined) errors.push({path, message: `Expected the value 'undefined' but got ${desc}`});
                 return;
             case 'union':
-                let isSome = (d.members as Descriptor[]).some(t => isValid(t, v, options));
+                let isSome = d.members.some(t => isValid(t, v, options));
                 // TODO: improve this message with specifics
                 if (!isSome) errors.push({path, message: `The value ${desc} does not conform to the union type`});
                 return;

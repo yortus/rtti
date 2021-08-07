@@ -1,5 +1,5 @@
 import cloneDeep from 'lodash.clonedeep';
-import {Descriptor, Object, Optional} from '../descriptor';
+import {Descriptor} from '../descriptor';
 import {isValid} from './is-valid';
 
 
@@ -16,9 +16,8 @@ export function sanitize(d: Descriptor, v: unknown): unknown {
         case 'object': {
             let obj = v as any;
             let clonedObj = {} as any;
-            let properties = d.properties as Record<string, Descriptor | Optional>;
-            for (let propName of Object.keys(properties)) {
-                let propType = properties[propName];
+            for (let propName of Object.keys(d.properties)) {
+                let propType = d.properties[propName];
                 let isOptional = propType.kind === 'optional';
                 propType = propType.kind === 'optional' ? propType.type as Descriptor : propType;
                 let propValue = obj[propName];
@@ -29,22 +28,20 @@ export function sanitize(d: Descriptor, v: unknown): unknown {
         }
             
         case 'intersection': {
-            // Create an Object descriptor with the union of all the properties of intersection members which are Object descriptors.
-            let combinedProps: Object = {
+            // Do excess property removal against an Object descriptor with the union
+            // of all the properties of intersection members which are Object descriptors.
+            return sanitize({
                 kind: 'object',
                 properties: d.members.reduce(
-                    (props, m: Descriptor) => m.kind === 'object' ? Object.assign(props, m.properties) : props,
+                    (props, member) => member.kind === 'object' ? Object.assign(props, member.properties) : props,
                     {} as Record<string, Descriptor>
                 ),
-            };
-
-            // Do excess property removal against the Object descriptor created above.
-            return sanitize(combinedProps, v as object);
+            }, v);
         }
 
         case 'union': {
             // Find the first union member type that matches the value `v`. There must be one according to preconds.
-            let matchingType = (d.members as Descriptor[]).find(m => isValid(m, v))!;
+            let matchingType = d.members.find(m => isValid(m, v))!;
 
             // Do excess property removal against the matching member type found above.
             return sanitize(matchingType, v);

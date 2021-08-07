@@ -1,4 +1,4 @@
-import {Descriptor, Optional} from '../descriptor';
+import {Descriptor} from '../descriptor';
 
 // TODO: return compact/abbreviated string for complex types
 
@@ -11,7 +11,7 @@ export function toString(d: Descriptor): string {
         case 'date': return 'Date';
         case 'intersection':
             if (d.members.length === 0) return `unknown`;
-            return d.members.map((md: Descriptor) => {
+            return d.members.map(md => {
                 let result = toString(md);
                 if (md.kind === 'intersection' || md.kind === 'union') result = `(${result})`;
                 return result;
@@ -22,7 +22,7 @@ export function toString(d: Descriptor): string {
         case 'object':
             let propNames = Object.keys(d.properties);
             let kvps = propNames.map(n => {
-                let propDesc = d.properties[n] as Descriptor | Optional;
+                let propDesc = d.properties[n];
                 let isOpt = propDesc.kind === 'optional';
                 return `${n}${isOpt ? '?' : ''}: ${toString(propDesc.kind === 'optional' ? propDesc.type : propDesc)}`;
             });
@@ -32,7 +32,7 @@ export function toString(d: Descriptor): string {
         case 'undefined': return 'undefined';
         case 'union':
             if (d.members.length === 0) return `never`;
-            return d.members.map((md: Descriptor) => {
+            return d.members.map(md => {
                 let result = toString(md);
                 if (md.kind === 'intersection' || md.kind === 'union') result = `(${result})`;
                 return result;

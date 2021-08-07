@@ -1,4 +1,4 @@
-import {Descriptor, Optional} from '../descriptor';
+import {Descriptor} from '../descriptor';
 
 export function toJsonSchema(d: Descriptor): unknown {
     switch (d.kind) {
@@ -14,9 +14,8 @@ export function toJsonSchema(d: Descriptor): unknown {
         case 'object': {
             const json = {type: 'object', properties: {}} as any;
             const required: string[] = [];
-            const properties = d.properties as Record<string, Descriptor | Optional>;
-            for (const propName of Object.keys(properties)) {
-                let propType = properties[propName];
+            for (const propName of Object.keys(d.properties)) {
+                let propType = d.properties[propName];
                 const isOptional = propType.kind === 'optional';
                 propType = propType.kind === 'optional' ? propType.type as Descriptor : propType;
                 json.properties[propName] = toJsonSchema(propType);

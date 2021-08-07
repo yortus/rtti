@@ -1,118 +1,107 @@
-import {Descriptor} from './descriptor';
-import {Array, BrandedString, Intersection, Object, Optional, Tuple, Union, Unit} from './descriptor';
-import * as op from './operations';
-import {Anonymize} from './utils';
+import {createTypeInfo} from './create-type-info';
+import type {Optional} from './descriptor';
+import {CheckOptions} from './operations';
 
+/** Type builder for creating runtime representations of types. */
 export const t = {
+    /**
+     * A type containing all possible values, but whose values can also be assigned to all other types.
+     * This is an unsound pseudo-type that corresponds to the TypeScript `any` type.
+     */
     any: createTypeInfo({kind: 'any'}),
+
+    /** A type containing all arrays whose elements all conform to the element type. */
     array: <E extends TypeInfo>(element: E) => createTypeInfo({kind: 'array', element}),
+
+    /** A type containing only the values `true` and `false`. */
     boolean: createTypeInfo({kind: 'boolean'}),
+
+    /**
+     * A plain string at runtime, but with nominal type-checking behaviours. In TypeScript terms, it is a subtype of
+     * `string`. Branded strings can only be assigned to/from other branded strings if they have the same brand. All
+     * branded strings can be assigned to strings. Plain strings can only be assigned to branded strings if the brand
+     * ends in a question mark (eg 'usd?'), otherwise a type-cast must be used.
+     */
     brandedString: <Brand extends string>(brand: Brand) => createTypeInfo({kind: 'brandedString', brand}),
+
+    /** A type representing a JavaScript Date object. */
     date: createTypeInfo({kind: 'date'}),
+
+    /** A type that is the conjunction of all its member types. */
     intersection: <M extends TypeInfo[]>(...members: M) => createTypeInfo({kind: 'intersection', members}),
+
+    /** A type that contains no values. Corresponds to TypeScripts bottom type `never`. */
     never: createTypeInfo({kind: 'never'}),
+
+    /** A type that only contains the value `null`. */
     null: createTypeInfo({kind: 'null'}),
+
+    /** A type that contains all JavaScript numbers (but not BigInts). */
     number: createTypeInfo({kind: 'number'}),
+
+    /** A type containing all objects with the given property names and types. */
     object: <P extends Record<string, TypeInfo | Optional>>(properties: P) => createTypeInfo({kind: 'object', properties}),
+
+    /** An operator for declaring that an object property is optional. */
     optional: <T extends TypeInfo>(type: T) => ({kind: 'optional' as const, type}),
+
+    /** A type containing all strings. */
     string: createTypeInfo({kind: 'string'}),
+
+    /** A type containing all arrays where each element conforms to the element type at the corresponding position. */
     tuple: <E extends TypeInfo[]>(...elements: E) => createTypeInfo({kind: 'tuple', elements}),
+
+    /** A type that only contains the value `undefined`. */
     undefined: createTypeInfo({kind: 'undefined'}),
+
+    /** A type that is the disjunction of all its member types. */
     union: <M extends TypeInfo[]>(...members: M) => createTypeInfo({kind: 'union', members}),
+
+    /** A type representing a single literal string/number/boolean value. */
     unit: <V extends string | number | boolean>(value: V) => createTypeInfo({kind: 'unit', value}),
+
+    /** A type containing all possible values. */
     unknown: createTypeInfo({kind: 'unknown'}),
 };
 
+/** A runtime representation of a type. */
 export type TypeInfo<T = unknown> = {
-    assertValid(v: unknown, options?: op.CheckOptions): asserts v is T;
-    check(v: unknown, options?: op.CheckOptions): op.CheckResult;
-    example: T; // getter
-    isValid(v: unknown, options?: op.CheckOptions): v is T;
+    /**
+     * Throws an error if the value `v` does not conform to the type, otherwise returns. Errors thrown by `assertValid`
+     * have an `errors` property with detailed information about the errors encountered during type checking.
+     */
+    assertValid(v: unknown, options?: CheckOptions): asserts v is T;
+
+    /**
+     * Checks whether the value `v` conforms to the type, returning detailed information about any type-checking errors
+     * encountered. If the value conforms to the type, the return value has `{isValid: true}`.
+     */
+    check(v: unknown, options?: CheckOptions): {isValid: boolean, errors: Array<{path: string, message: string}>};
+
+    /**
+     * A getter that generates a sample conforming value. The value may change on each access. NOTE: This getter throws
+     * an error on access for types that have no valid values (such as `t.never`).
+     */
+    example: T;
+
+    /** Returns true if the value `v` conforms to the type, or false otherwise. */
+    isValid(v: unknown, options?: CheckOptions): v is T;
+
+    /**
+     * Returns a deep clone of the value `v` containing only properties that are explicitly present in the type.
+     * That is, all excess properties are removed in the returned value.
+     */
     sanitize(v: T): T;
+
+    /**
+     * Returns a JSON Schema representation of the type.
+     */
     toJsonSchema(): unknown;
+
+    /**
+     * Returns a human-readable representation of the type.
+     */
     toString(): string;
 }
 
-
-
-
-
-
-
-
-
-
-// helper ctor
-function createTypeInfo<D extends Descriptor, T = TypeFromDescriptor<D>>(descriptor: D): TypeInfo<T> {
-    descriptor = simplify(descriptor);
-    const result: TypeInfo<T> = {
-        assertValid: (v, opts) => op.assertValid(descriptor, v, opts),
-        check: (v, opts) => op.check(descriptor, v, opts),
-        get example() { return op.generateValue(descriptor) as T},
-        isValid: (v, opts): v is T => op.isValid(descriptor, v, opts),
-        sanitize: v => op.sanitize(descriptor, v) as T,
-        toJsonSchema: () => op.toJsonSchema(descriptor),
-        toString: () => op.toString(descriptor),
-    };
-    // NB: TypeInfo is-a descriptor at runtime, but the public TypeInfo type is simpler without the Descriptor part.
-    return Object.assign(result, descriptor);
-}
-
-
-
-
-
-
-
-// Helper function to flatten directly-nested intersections and unions.
-// TODO: add other simplifications...
-function simplify<D extends Descriptor>(d: D): D {
-    if (d.kind !== 'intersection' && d.kind !== 'union') return d;
-    const members = d.members.reduce(
-        (flattened, member) => flattened.concat(member.kind === d.kind ? member.members : member),
-        [] as TypeInfo[],
-    );
-    return {...d, members};
-}
-
-
-
-
-type TypeFromDescriptor<D extends Descriptor> = {
-    any: any,
-    array: D extends Array<TypeInfo<infer Elem>> ? Elem[] : never,
-    boolean: boolean,
-    brandedString: D extends BrandedString<infer Brand>
-        ? Brand extends `${string}?`
-            ? string & {__brand?: {[K in Brand]: never}}
-            : string & {__brand: {[K in Brand]: never}}
-        : never,
-    date: Date,
-    intersection: D extends Intersection<infer Members> ? TypeOfIntersection<Members> : never,
-    never: never,
-    null: null,
-    number: number,
-    object: D extends Object<infer Props> ? TypeOfObject<Props> : never,
-    string: string,
-    tuple: D extends Tuple<infer Elements>
-        ? ({[K in keyof Elements]: Elements[K] extends TypeInfo<infer T> ? T : 0})
-        : never,
-    undefined: undefined,
-    union: D extends Union<infer Members> ? TypeOfUnion<Members> : never,
-    unit: D extends Unit<infer Value> ? Value : never,
-    unknown: unknown,
-}[D['kind']];
-
-type TypeOfIntersection<Members> = Anonymize<
-    Members[any] extends infer E ? (E extends TypeInfo<infer T> ? (x: T) => 0 : 0) extends ((x: infer I) => 0) ? I : 0 : 0
->;
-
-type TypeOfUnion<Members>
-    = Anonymize<Members[any] extends infer E ? (E extends TypeInfo<infer T> ? T : 0) : 0>;
-
-type TypeOfObject<Props> = Anonymize<
-    & {[K in RequiredPropNames<Props>]: Props[K] extends TypeInfo<infer T> ? T : 0}
-    & {[K in OptionalPropNames<Props>]?: Props[K] extends Optional<TypeInfo<infer T>> ? T : 0}
->;
-type RequiredPropNames<Props> = {[K in keyof Props]: Props[K] extends Optional ? never : K}[keyof Props];
-type OptionalPropNames<Props> = {[K in keyof Props]: Props[K] extends Optional ? K : never}[keyof Props];
+export {CheckOptions};

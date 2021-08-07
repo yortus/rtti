@@ -1,4 +1,4 @@
-import {Descriptor, Optional} from '../descriptor';
+import {Descriptor} from '../descriptor';
 
 // TODO: better fuzzing/randomization. Don't always return same values eg for any/string/number/etc
 // TODO: add tests
@@ -12,17 +12,16 @@ export function generateValue(d: Descriptor): unknown {
         case 'date': return new Date();
         case 'intersection': {
             if (d.members.length === 0) return ['any', 'value'];
-            return Object.assign({}, ...d.members.map((md: Descriptor) => generateValue(md)));
+            return Object.assign({}, ...d.members.map(generateValue));
         }
         case 'never': throw new Error(`Cannot generate a value for the 'never' type`);
         case 'null': return null;
         case 'number': return nat(1000);
         case 'object': {
-            let propDescs = d.properties as Record<string, Descriptor | Optional>;
-            let propNames = Object.keys(propDescs);
+            let propNames = Object.keys(d.properties);
             const obj: any = {};
             for (let propName of propNames) {
-                let propDesc = propDescs[propName];
+                let propDesc = d.properties[propName];
                 let isOptional = propDesc.kind === 'optional';
                 propDesc = propDesc.kind === 'optional' ? propDesc.type as Descriptor : propDesc;
                 if (isOptional && nat(2) === 0) continue;
@@ -31,12 +30,11 @@ export function generateValue(d: Descriptor): unknown {
             return obj;
         }
         case 'string': return 'any string'
-        case 'tuple': return d.elements.map((ed: Descriptor) => generateValue(ed));
+        case 'tuple': return d.elements.map(generateValue);
         case 'undefined': return undefined;
         case 'union': {
             if (d.members.length === 0) throw new Error(`Cannot generate a value for an empty union`);
-            const md: Descriptor = d.members[nat(d.members.length)];
-            return generateValue(md);
+            return generateValue(d.members[nat(d.members.length)]);
         }
         case 'unit': return d.value;
         case 'unknown': return ['any', 'value'];
