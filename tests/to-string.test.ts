@@ -1,47 +1,45 @@
 import {expect} from 'chai';
-import * as d from '../descriptors';
-import {toString} from './to-string';
-
+import {t} from '../src';
 
 describe('The toString() function', () => {
 
     const tests = [
         {
-            type: d.string,
+            type: t.string,
             text: 'string',
         },
         {
-            type: d.union(d.unit('foo'), d.unit('bar')),
+            type: t.union(t.unit('foo'), t.unit('bar')),
             text: '"foo" | "bar"',
         },
         {
-            type: d.number,
+            type: t.number,
             text: 'number',
         },
         {
-            type: d.unit(42),
+            type: t.unit(42),
             text: '42',
         },
         {
-            type: d.object({foo: d.string}),
+            type: t.object({foo: t.string}),
             text: '{foo: string}',
         },
         {
-            type: d.object({foo: d.optional(d.string)}),
+            type: t.object({foo: t.optional(t.string)}),
             text: '{foo?: string}',
         },
         {
-            type: d.array(d.unknown),
+            type: t.array(t.unknown),
             text: 'Array<unknown>',
         },
         {
-            type: d.array(d.number),
+            type: t.array(t.number),
             text: 'Array<number>',
         },
         {
-            type: d.intersection(
-                d.object({foo: d.string}),
-                d.object({bar: d.number}),
+            type: t.intersection(
+                t.object({foo: t.string}),
+                t.object({bar: t.number}),
             ),
             text: '{foo: string} & {bar: number}',
         },
@@ -50,7 +48,7 @@ describe('The toString() function', () => {
     for (let {type, text} of tests) {
         it(text, () => {
             let expected = text;
-            let actual = toString(type);
+            let actual = type.toString();
             expect(actual).to.equal(expected);
         });
     }

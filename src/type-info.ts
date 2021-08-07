@@ -45,7 +45,7 @@ export type TypeInfo<T = unknown> = {
 // helper ctor
 function createTypeInfo<D extends Descriptor, T = TypeFromDescriptor<D>>(descriptor: D): TypeInfo<T> {
     descriptor = flatten(descriptor);
-    return {
+    const result: TypeInfo<T> = {
         assertValid: (v, opts) => op.assertValid(descriptor, v, opts),
         check: (v, opts) => op.check(descriptor, v, opts),
         get example() { return op.generateValue(descriptor) as T},
@@ -54,6 +54,8 @@ function createTypeInfo<D extends Descriptor, T = TypeFromDescriptor<D>>(descrip
         toJsonSchema: () => op.toJsonSchema(descriptor),
         toString: () => op.toString(descriptor),
     };
+    // NB: TypeInfo is-a descriptor at runtime, but the public TypeInfo type is simpler without the Descriptor part.
+    return Object.assign(result, descriptor);
 }
 
 

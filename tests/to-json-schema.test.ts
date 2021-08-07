@@ -1,11 +1,8 @@
 import {expect} from 'chai';
-import {getJsonSchema} from './get-json-schema';
-import {toString} from './to-string';
-import * as t from './type-info';
-
+import {t, TypeInfo} from '../src';
 
 describe('The toJsonSchema() function', () => {
-    const testCases: Array<{type: t.TypeInfo, jsonSchema: unknown}> = [
+    const testCases: Array<{type: TypeInfo, jsonSchema: unknown}> = [
         {
             type: t.string,
             jsonSchema: {type: 'string'},
@@ -130,10 +127,10 @@ describe('The toJsonSchema() function', () => {
 
 
     for (let {type, jsonSchema: expected} of testCases) {
-        it(`JSON schema for ${toString(type)}`, () => {
+        it(`JSON schema for ${type}`, () => {
             let actual: unknown;
             try {
-                actual = getJsonSchema(type);
+                actual = type.toJsonSchema();
             }
             catch {
                 actual = Error;

@@ -1,8 +1,6 @@
 import {expect} from 'chai';
 import {inspect} from 'util';
-import * as t from '../descriptors';
-import {check} from './check';
-import {toString} from './to-string';
+import {t} from '../src';
 
 describe('The check() function', () => {
 
@@ -72,12 +70,12 @@ describe('The check() function', () => {
 
     for (let {type, value, expectedErrors, expectedStrictErrors} of tests) {
         let d = inspect(value, {depth: 0, compact: true, breakLength: Infinity});
-        it(`${d} as ${toString(type)}`, () => {
-            let actualLoose = check(type, value, {allowExcessProperties: true});
-            expect(actualLoose.errors).to.deep.equal(expectedErrors);
+        it(`${d} as ${type}`, () => {
+            let actualLoose = type.check(value, {allowExcessProperties: true});
+            expect(actualLoose.errors).to.have.deep.members(expectedErrors);
 
-            let actualStrict = check(type, value, {allowExcessProperties: false});
-            expect(actualStrict.errors).to.deep.equal([...expectedErrors, ...expectedStrictErrors]);
+            let actualStrict = type.check(value, {allowExcessProperties: false});
+            expect(actualStrict.errors).to.have.deep.members([...expectedErrors, ...expectedStrictErrors]);
         });
     }
 });
