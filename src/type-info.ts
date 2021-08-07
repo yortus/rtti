@@ -44,7 +44,7 @@ export type TypeInfo<T = unknown> = {
 
 // helper ctor
 function createTypeInfo<D extends Descriptor, T = TypeFromDescriptor<D>>(descriptor: D): TypeInfo<T> {
-    descriptor = flatten(descriptor);
+    descriptor = simplify(descriptor);
     const result: TypeInfo<T> = {
         assertValid: (v, opts) => op.assertValid(descriptor, v, opts),
         check: (v, opts) => op.check(descriptor, v, opts),
@@ -64,35 +64,9 @@ function createTypeInfo<D extends Descriptor, T = TypeFromDescriptor<D>>(descrip
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 // Helper function to flatten directly-nested intersections and unions.
-function flatten<D extends Descriptor>(d: D): D {
+// TODO: add other simplifications...
+function simplify<D extends Descriptor>(d: D): D {
     if (d.kind !== 'intersection' && d.kind !== 'union') return d;
     const members = d.members.reduce(
         (flattened, member) => flattened.concat(member.kind === d.kind ? member.members : member),
