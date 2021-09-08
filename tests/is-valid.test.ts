@@ -1,9 +1,9 @@
 import {expect} from 'chai';
-import {assert} from './assert';
-import * as t from './type-info';
+import {t} from '../src';
 
+// TODO: test with allowExcessProperties: false
 
-describe('The assert() function', () => {
+describe('The isValid() function', () => {
 
     const values = {
         string: 'kasdjfkjasdfgasjkdhgfkasjdhgf',
@@ -14,6 +14,8 @@ describe('The assert() function', () => {
         objectWithFoo: {foo: 'bar'},
         array: [1, 'foo', false],
         arrayOfNum: [1, 2, 3, 4],
+        objectWithOptionalBarMissing: {baz: 10},
+        objectWithOptionalBarUndefined: {bar: undefined, baz: 10},
     };
 
     const types = {
@@ -24,18 +26,14 @@ describe('The assert() function', () => {
         objectWithFoo: t.object({foo: t.string}),
         array: t.array(t.unknown),
         arrayOfNum: t.array(t.number),
+        objectWithOptionalBar: t.object({bar: t.optional(t.string), baz: t.number}),
     };
 
     for (let [valueName, value] of Object.entries(values)) {
         for (let [typeName, type] of Object.entries(types)) {
-            let expectToThrow = !valueName.startsWith(typeName);
-            it(`Value ${JSON.stringify(value)} is ${expectToThrow ? 'not ' : ''}of type '${typeName}'`, () => {
-                if (expectToThrow) {
-                    expect(() => assert(type, value)).to.throw();
-                }
-                else {
-                    expect(() => assert(type, value)).to.not.throw();
-                }
+            let expected = valueName.startsWith(typeName);
+            it(`Value ${JSON.stringify(value)} is ${expected ? '' : 'not '}of type '${typeName}'`, () => {
+                expect(type.isValid(value)).to.equal(expected);
             });
         }
     }

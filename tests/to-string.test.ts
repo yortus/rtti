@@ -1,7 +1,5 @@
 import {expect} from 'chai';
-import {toString} from './to-string';
-import * as t from './type-info';
-
+import {t} from '../src';
 
 describe('The toString() function', () => {
 
@@ -50,7 +48,7 @@ describe('The toString() function', () => {
     for (let {type, text} of tests) {
         it(text, () => {
             let expected = text;
-            let actual = toString(type);
+            let actual = type.toString();
             expect(actual).to.equal(expected);
         });
     }

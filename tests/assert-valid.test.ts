@@ -1,9 +1,7 @@
 import {expect} from 'chai';
-import {is} from './is';
-import * as t from './type-info';
+import {t} from '../src';
 
-
-describe('The is() function', () => {
+describe('The assertValid() function', () => {
 
     const values = {
         string: 'kasdjfkjasdfgasjkdhgfkasjdhgf',
@@ -14,8 +12,6 @@ describe('The is() function', () => {
         objectWithFoo: {foo: 'bar'},
         array: [1, 'foo', false],
         arrayOfNum: [1, 2, 3, 4],
-        objectWithOptionalBarMissing: {baz: 10},
-        objectWithOptionalBarUndefined: {bar: undefined, baz: 10},
     };
 
     const types = {
@@ -26,14 +22,18 @@ describe('The is() function', () => {
         objectWithFoo: t.object({foo: t.string}),
         array: t.array(t.unknown),
         arrayOfNum: t.array(t.number),
-        objectWithOptionalBar: t.object({bar: t.optional(t.string), baz: t.number}),
     };
 
     for (let [valueName, value] of Object.entries(values)) {
         for (let [typeName, type] of Object.entries(types)) {
-            let expected = valueName.startsWith(typeName);
-            it(`Value ${JSON.stringify(value)} is ${expected ? '' : 'not '}of type '${typeName}'`, () => {
-                expect(is(type, value)).to.equal(expected);
+            let expectToThrow = !valueName.startsWith(typeName);
+            it(`Value ${JSON.stringify(value)} is ${expectToThrow ? 'not ' : ''}of type '${typeName}'`, () => {
+                if (expectToThrow) {
+                    expect(() => type.assertValid(value)).to.throw();
+                }
+                else {
+                    expect(() => type.assertValid(value)).to.not.throw();
+                }
             });
         }
     }

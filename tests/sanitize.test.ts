@@ -1,9 +1,6 @@
 import {expect} from 'chai';
 import {inspect} from 'util';
-import {removeExcessProperties} from './remove-excess-properties';
-import {toString} from './to-string';
-import * as t from './type-info';
-
+import {t} from '../src';
 
 describe('The removeExcessProperties() function', () => {
 
@@ -114,8 +111,8 @@ describe('The removeExcessProperties() function', () => {
 
     for (let {type, value, expected} of tests) {
         let d = inspect(value, {depth: 0, compact: true, breakLength: Infinity});
-        it(`${d} as ${toString(type)}`, () => {
-            let actual = removeExcessProperties(type, value as any);
+        it(`${d} as ${type}`, () => {
+            let actual = type.sanitize(value as any);
             expect(actual).to.deep.equal(expected);
         });
     }
