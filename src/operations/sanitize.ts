@@ -47,16 +47,18 @@ export function sanitize(d: Descriptor, v: unknown): unknown {
             return sanitize(matchingType, v);
         }
 
-        case 'any':
         case 'boolean':
         case 'brandedString':
-        case 'date':
-        case 'never':
         case 'null':
         case 'number':
         case 'string':
         case 'undefined':
         case 'unit':
+            return v;
+        
+        case 'any':
+        case 'date':
+        case 'never':
         case 'unknown':
             return cloneDeep(v);
 
