@@ -1,6 +1,6 @@
 # rtti
 
-**Runtime type information for JavaScript and TypeScript programs.**
+**Runtime type validation for JavaScript and TypeScript programs.**
 
 This library bring the benefits of TypeScript's type system to runtime code. By declaring types using runtime constructs, it is possible to add an extra level of runtime type safety that static checking alone cannot provide. For example:
 - ensure that a parsed JSON string produces a value that conforms to an expected schema
