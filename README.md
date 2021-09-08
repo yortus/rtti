@@ -54,7 +54,8 @@ Construct a `TypeInfo` instance that matches a particular set of runtime values.
 
 ---
 ##### `myType.assertValid(value: unknown): void`
-Ensures the given `value` matches the given `type`, otherwise throws an error.
+Ensures the given `value` matches the given `type`, otherwise throws an error. The error object has an `errors`
+property containing details about the validation error(s).
 <br/>
 
 ---
