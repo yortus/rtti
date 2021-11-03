@@ -70,8 +70,7 @@ type TypeOfIntersection<Members> = Anonymize<
     Members[any] extends infer E ? (E extends TypeInfo<infer T> ? (x: T) => 0 : 0) extends ((x: infer I) => 0) ? I : 0 : 0
 >;
 
-type TypeOfUnion<Members>
-    = Anonymize<Members[any] extends infer E ? (E extends TypeInfo<infer T> ? T : 0) : 0>;
+type TypeOfUnion<Members> = Members[any] extends infer E ? (E extends TypeInfo<infer T> ? T : 0) : 0;
 
 type TypeOfObject<Props> = Anonymize<
     & {[K in RequiredPropNames<Props>]: Props[K] extends TypeInfo<infer T> ? T : 0}
