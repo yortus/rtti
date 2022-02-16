@@ -47,6 +47,7 @@ type MyType = typeof myType.example; // type MyType = "foo" | "bar"
 
 ## API
 
+> NOTE: The [v0.4 API](https://github.com/yortus/rtti/tree/v0-api#api) is deprecated but still supported.
 ---
 ##### `t.string`, `t.object(...)`, etc
 Construct a `TypeInfo` instance that matches a particular set of runtime values.
