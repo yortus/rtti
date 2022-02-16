@@ -6,7 +6,7 @@ import type {Anonymize} from './utils';
 /**
  * Internal factory function for creating a TypeInfo object from a Descriptor. An important implementation detail (ie
  * a detail that is not exposed outside the library but is relied on within the library) is that every TypeInfo object
- * is-a Descriptor object at runtime. However the descriptor properties are ommitted from the TypeInfo type since the
+ * is-a Descriptor object at runtime. However the descriptor properties are omitted from the TypeInfo type since the
  * public API does not require this detail.
  */
 export function createTypeInfo<D extends Descriptor<TypeInfo>, T = TypeFromDescriptor<D>>(descriptor: D): TypeInfo<T> {
