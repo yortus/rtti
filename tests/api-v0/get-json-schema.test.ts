@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {t, TypeInfo, getJsonSchema, toString} from '../../src';
+import {t, TypeInfo, getJsonSchema, toString} from 'rtti';
 
 describe('The getJsonSchema() function', () => {
     const testCases: Array<{type: TypeInfo, jsonSchema: unknown}> = [

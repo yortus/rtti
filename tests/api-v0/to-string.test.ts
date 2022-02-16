@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {t, toString} from '../../src';
+import {t, toString} from 'rtti';
 
 describe('The toString() function', () => {
 

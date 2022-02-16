@@ -1,6 +1,6 @@
 import {expect} from 'chai';
 import {inspect} from 'util';
-import {t} from '../src';
+import {t} from 'rtti';
 
 describe('The check() function', () => {
 

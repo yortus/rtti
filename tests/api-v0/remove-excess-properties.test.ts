@@ -1,6 +1,6 @@
 import {expect} from 'chai';
 import {inspect} from 'util';
-import {t, removeExcessProperties, toString} from '../../src';
+import {t, removeExcessProperties, toString} from 'rtti';
 
 describe('The removeExcessProperties() function', () => {
 
