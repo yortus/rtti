@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {t} from '../src';
+import {t} from 'rtti';
 
 // TODO: test with allowExcessProperties: false
 

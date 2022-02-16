@@ -1,5 +1,6 @@
 // Type tests: the code here is not executed, it just needs to pass type checks to be considered successful.
-// Note that `t` is imported from the built declaration files, since that's where a regression occurred.
+// Added as regression test for bug caused by https://github.com/microsoft/TypeScript/issues/46655.
+// Note that `t` is imported from the built declaration files, since that's where the regression occurred.
 
 import {t} from '../dist/commonjs';
 export {test1, test2};

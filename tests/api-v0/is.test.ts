@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {t, TypeInfo, is} from '../../src';
+import {t, TypeInfo, is} from 'rtti';
 
 describe('The is() function', () => {
 

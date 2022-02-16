@@ -1,6 +1,6 @@
 import {expect} from 'chai';
 import {inspect} from 'util';
-import {t, getValidationErrors, toString} from '../../src';
+import {t, getValidationErrors, toString} from 'rtti';
 
 describe('The getValidationErrors() function', () => {
 

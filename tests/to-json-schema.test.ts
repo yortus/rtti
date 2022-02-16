@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {t, TypeInfo} from '../src';
+import {t, TypeInfo} from 'rtti';
 
 describe('The toJsonSchema() function', () => {
     const testCases: Array<{type: TypeInfo, jsonSchema: unknown}> = [
