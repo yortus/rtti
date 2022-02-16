@@ -2,7 +2,6 @@ import cloneDeep from 'lodash.clonedeep';
 import {Descriptor} from '../descriptor';
 import {isValid} from './is-valid';
 
-
 // TODO: doc... precond: The runtime value `v` conforms to the type described by `t`.
 export function sanitize(d: Descriptor, v: unknown): unknown {
     switch (d.kind) {

@@ -3,7 +3,6 @@ import {Descriptor} from '../descriptor';
 import {check, CheckOptions} from './check';
 import {toString} from './to-string';
 
-
 export function assertValid(d: Descriptor, v: unknown, options?: CheckOptions): void {
     const {isValid, errors} = check(d, v, options);
     if (isValid) return;
