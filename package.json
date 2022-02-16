@@ -1,6 +1,6 @@
 {
     "name": "rtti",
-    "version": "1.1.0",
+    "version": "1.1.1",
     "description": "Runtime type validation for JavaScript and TypeScript programs",
     "main": "dist/commonjs/index.js",
     "typings": "dist/commonjs/index.d.ts",
