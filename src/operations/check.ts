@@ -1,6 +1,6 @@
-import {inspect} from 'util';
 import {isValid} from './is-valid';
 import {Descriptor} from '../descriptor';
+import {inspect} from '../utils';
 
 /** Options for checking whether a value confirms to a type. */
 export interface CheckOptions {
@@ -23,7 +23,7 @@ export function check(d: Descriptor, v: unknown, options?: CheckOptions): CheckR
     return errors.length === 0 ? {isValid: true, errors: []} : {isValid: false, errors};
 
     function recurse(d: Descriptor, v: unknown, path: string): void {
-        let desc = inspect(v, {depth: 0, compact: true, breakLength: Infinity});
+        let desc = inspect(v);
         switch (d.kind) {
             case 'any':
                 return;

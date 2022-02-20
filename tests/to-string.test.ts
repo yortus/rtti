@@ -1,7 +1,7 @@
 import {expect} from 'chai';
 import {t} from 'rtti';
 
-describe('The toString() function', () => {
+describe('The toString() method', () => {
 
     const tests = [
         {

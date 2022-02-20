@@ -1,7 +1,7 @@
 import {expect} from 'chai';
 import {t, TypeInfo} from 'rtti';
 
-describe('The toJsonSchema() function', () => {
+describe('The toJsonSchema() method', () => {
     const testCases: Array<{type: TypeInfo, jsonSchema: unknown}> = [
         {
             type: t.string,
