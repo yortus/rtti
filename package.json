@@ -30,12 +30,8 @@
     "bugs": {
         "url": "https://github.com/yortus/rtti/issues"
     },
-    "dependencies": {
-        "lodash.clonedeep": "^4.5.0"
-    },
     "devDependencies": {
         "@types/chai": "^4.3.0",
-        "@types/lodash.clonedeep": "^4.5.6",
         "@types/mocha": "^9.1.0",
         "@types/node": "^16.*",
         "chai": "^4.3.6",

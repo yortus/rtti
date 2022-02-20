@@ -2,7 +2,7 @@ import {expect} from 'chai';
 import {inspect} from 'util';
 import {t} from 'rtti';
 
-describe('The removeExcessProperties() function', () => {
+describe('The sanitize() method', () => {
 
     const tests = [
         {
