@@ -3,7 +3,7 @@ import {t} from 'rtti';
 
 // TODO: test with allowExcessProperties: false
 
-describe('The isValid() function', () => {
+describe('The isValid() method', () => {
 
     const values = {
         string: 'kasdjfkjasdfgasjkdhgfkasjdhgf',

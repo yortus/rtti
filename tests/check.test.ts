@@ -2,7 +2,7 @@ import {expect} from 'chai';
 import {inspect} from 'util';
 import {t} from 'rtti';
 
-describe('The check() function', () => {
+describe('The check() method', () => {
 
     const tests = [
         {
@@ -26,7 +26,7 @@ describe('The check() function', () => {
         {
             type: t.union(t.unit('foo'), t.unit('bar')),
             value: 'baz',
-            expectedErrors: [{path: '^', message: `The value 'baz' does not conform to the union type`}],
+            expectedErrors: [{path: '^', message: `The value "baz" does not conform to the union type`}],
             expectedStrictErrors: [],
         },
         {
@@ -40,7 +40,7 @@ describe('The check() function', () => {
             value: {foo: {str: true, num: {pi: 3.14}}},
             expectedErrors: [
                 {path: '^.foo.str', message: `Expected a string but got true`},
-                {path: '^.foo.num', message: `Expected a number but got { pi: 3.14 }`}
+                {path: '^.foo.num', message: `Expected a number but got {pi: 3.14}`}
             ],
             expectedStrictErrors: [],
         },
@@ -48,9 +48,9 @@ describe('The check() function', () => {
             type: t.object({nums: t.array(t.number)}),
             value: {nums: [3.14, -1, NaN, 'one', 42, '3', {zero: true}]},
             expectedErrors: [
-                {path: '^.nums[3]', message: `Expected a number but got 'one'`},
-                {path: '^.nums[5]', message: `Expected a number but got '3'`},
-                {path: '^.nums[6]', message: `Expected a number but got { zero: true }`},
+                {path: '^.nums[3]', message: `Expected a number but got "one"`},
+                {path: '^.nums[5]', message: `Expected a number but got "3"`},
+                {path: '^.nums[6]', message: `Expected a number but got {zero: true}`},
             ],
             expectedStrictErrors: [],
         },

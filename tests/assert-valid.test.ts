@@ -1,7 +1,7 @@
 import {expect} from 'chai';
 import {t} from 'rtti';
 
-describe('The assertValid() function', () => {
+describe('The assertValid() method', () => {
 
     const values = {
         string: 'kasdjfkjasdfgasjkdhgfkasjdhgf',

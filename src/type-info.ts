@@ -88,8 +88,12 @@ export type TypeInfo<T = unknown> = {
     isValid(v: unknown, options?: CheckOptions): v is T;
 
     /**
-     * Returns a deep clone of the value `v` containing only properties that are explicitly present in the type.
-     * That is, all excess properties are removed in the returned value.
+     * Given a value `v` that is already known to conform to the type, this method returns a copy of the value
+     * containing only components that are explicitly present in the type. That is, properties and elements in the input
+     * value that are not explicitly present in the type are not copied to the output value.
+     * 
+     * NOTE: the output value is not guaranteed to be a deep clone. For example, values typed as `date`, `any` or
+     * `unknown` are shallow-copied to the output value.
      */
     sanitize(v: T): T;
 
