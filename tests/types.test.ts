@@ -1,7 +1,8 @@
 // Type tests: the code here is not executed, it just needs to pass type checks to be considered successful.
-// Added as regression test for bug caused by https://github.com/microsoft/TypeScript/issues/46655.
-// Note that `t` is imported from the built declaration files, since that's where the regression occurred.
 
+// --------------------------------------------------
+// Regression test for bug caused by https://github.com/microsoft/TypeScript/issues/46655.
+// Note that `t` is imported from the built declaration files, since that's where the regression occurred.
 import {t} from '../dist/commonjs';
 export {test1, test2};
 
@@ -32,3 +33,13 @@ function test2(t2: typeof T2.example) {
         default: ((x: never) => x)(t2);
     }
 }
+
+// --------------------------------------------------
+// Regression test for https://github.com/yortus/http-schemas/issues/30
+const Result = t.object({
+    date: t.string,
+    foobar: t.optional(t.number),
+});
+type Result = typeof Result.example;
+let result: Result = {date: '1234'};
+if (result.foobar) result.foobar.toExponential;
