@@ -1,4 +1,4 @@
-import type {Descriptor, Optional} from './descriptor';
+import type {Descriptor} from './descriptor';
 import * as op from './operations';
 import type {TypeInfo} from './type-info'; // NB: type-only import (no cyclic imports at runtime)
 import type {Anonymize} from './utils';
@@ -74,7 +74,7 @@ type TypeOfUnion<Members> = Members[any] extends infer E ? (E extends TypeInfo<i
 
 type TypeOfObject<Props> = Anonymize<
     & {[K in RequiredPropNames<Props>]: Props[K] extends TypeInfo<infer T> ? T : 0}
-    & {[K in OptionalPropNames<Props>]?: Props[K] extends Optional<TypeInfo<infer T>> ? T : 0}
+    & {[K in OptionalPropNames<Props>]?: Props[K] extends {kind: 'optional', type: TypeInfo<infer T>} ? T : 0}
 >;
-type RequiredPropNames<Props> = {[K in keyof Props]: Props[K] extends Optional ? never : K}[keyof Props];
-type OptionalPropNames<Props> = {[K in keyof Props]: Props[K] extends Optional ? K : never}[keyof Props];
+type RequiredPropNames<Props> = {[K in keyof Props]: Props[K] extends {kind: 'optional'} ? never : K}[keyof Props];
+type OptionalPropNames<Props> = {[K in keyof Props]: Props[K] extends {kind: 'optional'} ? K : never}[keyof Props];
